@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}BookAlchemy{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <header class="topbar">
+      <nav class="nav">
+        <a class="brand" href="{{ url_for('home') }}">BookAlchemy</a>
+        <div class="nav-links">
+          <a href="{{ url_for('home') }}">Library</a>
+          <a href="{{ url_for('add_author') }}">Add author</a>
+          <a href="{{ url_for('add_book') }}">Add book</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page">
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>

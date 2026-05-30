@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Add Book - BookAlchemy{% endblock %}
+
+{% block content %}
+  <section class="page-header">
+    <h1>Add Book</h1>
+    <p>Add a title, connect it to an author, and let the cover appear on the library shelf.</p>
+  </section>
+
+  {% if success %}
+    <p class="notice">Book successfully added.</p>
+  {% endif %}
+
+  {% if authors %}
+    <form class="form-panel" action="{{ url_for('add_book') }}" method="POST">
+      <div class="field">
+        <label for="isbn">ISBN</label>
+        <input type="text" id="isbn" name="isbn" required>
+      </div>
+
+      <div class="field">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" required>
+      </div>
+
+      <div class="field">
+        <label for="publication_year">Publication Year</label>
+        <input type="number" id="publication_year" name="publication_year">
+      </div>
+
+      <div class="field">
+        <label for="author_id">Author</label>
+        <select id="author_id" name="author_id" required>
+          {% for author in authors %}
+            <option value="{{ author.id }}">{{ author.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <input type="submit" value="Add Book">
+    </form>
+  {% else %}
+    <p class="empty-state">Please add an author before adding books.</p>
+  {% endif %}
+{% endblock %}

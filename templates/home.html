@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}BookAlchemy Library{% endblock %}
+
+{% block content %}
+  <section class="page-header">
+    <h1>Library</h1>
+    <p>Browse your books, search by title, and keep the collection tidy.</p>
+  </section>
+
+  {% if deleted %}
+    <p class="notice">Book successfully deleted.</p>
+  {% endif %}
+
+  <form class="toolbar" action="{{ url_for('home') }}" method="GET">
+    <div class="field">
+      <label for="search">Search</label>
+      <input
+        type="text"
+        id="search"
+        name="search"
+        value="{{ search_query }}"
+        placeholder="Title or phrase"
+      >
+    </div>
+
+    <div class="field">
+      <label for="sort">Sort by</label>
+      <select id="sort" name="sort">
+        <option value="title" {% if sort_by == "title" %}selected{% endif %}>
+          Title
+        </option>
+        <option value="author" {% if sort_by == "author" %}selected{% endif %}>
+          Author
+        </option>
+      </select>
+    </div>
+
+    <input type="submit" value="Search">
+  </form>
+
+  {% if search_query %}
+    <p class="meta">Search results for "{{ search_query }}"</p>
+  {% endif %}
+
+  {% if books %}
+    <section class="book-grid">
+      {% for book in books %}
+        <article class="book-card">
+          <div class="book-cover">
+            <img
+              src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg"
+              alt="Cover for {{ book.title }}"
+            >
+          </div>
+
+          <div>
+            <h2>{{ book.title }}</h2>
+            <p class="meta">Author: {{ book.author.name }}</p>
+            {% if book.publication_year %}
+              <p class="meta">Published: {{ book.publication_year }}</p>
+            {% endif %}
+          </div>
+
+          <form
+            action="{{ url_for('delete_book', book_id=book.id) }}"
+            method="POST"
+          >
+            <button class="button-danger" type="submit">Delete book</button>
+          </form>
+        </article>
+      {% endfor %}
+    </section>
+  {% elif search_query %}
+    <p class="empty-state">No books match your search.</p>
+  {% else %}
+    <p class="empty-state">No books in the library yet.</p>
+  {% endif %}
+{% endblock %}
